@@ -22,10 +22,10 @@ The MCP server is set up to handle web search queries using the Tavily API. It i
    ```
 
 2. **Configure environment variables**:
-   - Copy the `.env.sample` to `.env` and add your Tavily API key:
-     ```
-     TAVILY_API_KEY=your_api_key_here
-     ```
+Copy the `.env.sample` to `.env` and add your Tavily API key:
+   ```
+   TAVILY_API_KEY=your_api_key_here
+   ```
 
 ## Running the MCP Server
 

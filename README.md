@@ -32,9 +32,15 @@ Copy the `.env.sample` to `.env` and add your Tavily API key:
    TAVILY_API_KEY=your_api_key_here
    ```
 
+3. 🏗️ **Add a new tool to your MCP Server** 🏗️
+
+Create a new tool in the `server.py` file, that's it!
+
 ## Running the MCP Server
 
 To start the MCP server, you will need to add the following to your MCP Profile in Cursor:
+
+> NOTE: To get to your MCP config. you can use the Command Pallete (CMD/CTRL+SHIFT+P) and select "View: Open MCP Settings" and replace the contents with the JSON blob below.
 
 ```
 {

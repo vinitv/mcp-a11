@@ -18,6 +18,25 @@ The MCP server is set up to handle web search queries using the Tavily API. It i
 - Python 3.13 or higher
 - A valid Tavily API key
 
+## ⚠️NOTE FOR WINDOWS:⚠️
+
+You'll need to install this on the *Windows* side of your OS. 
+
+This will require getting two CLI tool for Powershell, which you can do as follows:
+
+- `winget install astral-sh.uv`
+- `winget install --id Git.Git -e --source winget`
+
+After you have those CLI tools, please open Cursor *into Windows*.
+
+Then, you can clone the repository using the following command in your Cursor terminal:
+
+```bash
+git clone https://github.com/AI-Maker-Space/MCP-Session-Code.git
+```
+
+After that, you can follow from Step 2. below!
+
 ## Installation
 
 1. **Clone the repository**:

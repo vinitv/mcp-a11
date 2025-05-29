@@ -64,7 +64,7 @@ To start the MCP server, you will need to add the following to your MCP Profile 
 ```
 {
     "mcpServers":  {
-        "websearch-server": {
+        "mcp-server": {
             "command" : "uv",
             "args" : ["--directory", "/PATH/TO/REPOSITORY", "run", "server.py"]
         }

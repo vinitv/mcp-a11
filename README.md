@@ -3,7 +3,7 @@
      height="auto"/>
 </p>
 
-## <h1 align="center" id="heading">AI Makerspace: MCP Event</h1>
+## <h1 align="center" id="heading">AI Makerspace: MCP Session Repo for Session 13</h1>
 
 This project is a demonstration of the MCP (Model Context Protocol) server, which utilizes the Tavily API for web search capabilities. The server is designed to run in a standard input/output (stdio) transport mode.
 
@@ -78,10 +78,16 @@ The server will start and listen for commands via standard input/output.
 
 The server provides a `web_search` tool that can be used to search the web for information about a given query. This is achieved by calling the `web_search` function with the desired query string.
 
-## License
+## Activities: 
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
+There are a few activities for this assignment!
 
-## Contributing
+### 🏗️ Activity #1: 
 
-Contributions are welcome! Please open an issue or submit a pull request for any changes.
+Choose an API that you enjoy using - and build an MCP server for it!
+
+### 🏗️ Activity #2: 
+
+Build a simple LangGraph application that interacts with your MCP Server.
+
+You can find details [here](https://github.com/langchain-ai/langchain-mcp-adapters)!

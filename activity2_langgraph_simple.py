@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-"""
-Simple LangGraph Application for Repair Cost Assistant
-A working LangGraph demo that shows the concepts without complex MCP integration
-"""
 
 import asyncio
 import subprocess

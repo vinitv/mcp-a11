@@ -32,9 +32,10 @@ def roll_dice(notation: str, num_rolls: int = 1) -> str:
 def repair_cost(repair_type: str, zip_code: str) -> str:
     """Get repair cost estimate for home repairs"""
     try:
+        repair_type=repair_type.replace(' ', '_')
         url = f"{REPAIR_API_BASE_URL}/api/v1/repair-cost/{repair_type}"
         headers = {"x-api-key": REPAIR_API_KEY}
-        params = {"zip_code": zip_code, "scope": "average"}
+        params = {"zip_code": zip_code, "scope": "comprehensive"}
         
         response = requests.get(url, headers=headers, params=params)
         response.raise_for_status()

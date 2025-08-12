@@ -2,7 +2,6 @@
 
 import asyncio
 import subprocess
-import json
 from typing import Dict, List, Any, TypedDict
 from langgraph.graph import StateGraph, END
 
@@ -11,7 +10,6 @@ class RepairState(TypedDict):
     messages: List[Dict[str, str]]
     user_query: str
     repair_info: Dict[str, Any]
-    current_step: str
 
 # Simple tool functions that call MCP tools via subprocess
 async def call_mcp_tool(tool_name: str, **kwargs) -> str:
@@ -33,17 +31,10 @@ from server import {tool_name}
 
 async def main():
     try:
-        # Debug: Check API key availability for repair_cost
-        if "{tool_name}" == "repair_cost":
-            api_key = os.getenv("REPAIR_API_KEY")
-            print(f"DEBUG: API key available: {{bool(api_key)}}", file=sys.stderr)
-        
         result = {tool_name}({', '.join(f'"{v}"' if isinstance(v, str) else str(v) for v in kwargs.values())})
         print(result)
     except Exception as e:
         print(f"Error: {{e}}")
-        import traceback
-        print(f"Traceback: {{traceback.format_exc()}}", file=sys.stderr)
 
 asyncio.run(main())
 """
@@ -66,11 +57,7 @@ asyncio.run(main())
             os.remove("temp_call.py")
         
         if result.returncode == 0:
-            # Include debug info if available
-            debug_info = ""
-            if result.stderr:
-                debug_info = f" (Debug: {result.stderr.strip()})"
-            return result.stdout.strip() + debug_info
+            return result.stdout.strip()
         else:
             return f"Error: {result.stderr}"
             
@@ -181,6 +168,11 @@ def route_to_tool(state: RepairState) -> str:
     # Default to dice rolling
     return "roll_dice_for_fun"
 
+# Routing node function
+def route(state: RepairState) -> RepairState:
+    """Routing node that doesn't modify state, just passes through"""
+    return state
+
 # Create the LangGraph workflow
 def create_repair_assistant():
     """Create the repair assistant workflow"""
@@ -189,12 +181,24 @@ def create_repair_assistant():
     workflow = StateGraph(RepairState)
     
     # Add nodes
+    workflow.add_node("route", route)
     workflow.add_node("get_repair_cost", get_repair_cost)
     workflow.add_node("search_repair_info", search_repair_info)
     workflow.add_node("roll_dice_for_fun", roll_dice_for_fun)
     
-    # Set the entry point
-    workflow.set_entry_point("get_repair_cost")
+    # Set the entry point to use conditional routing
+    workflow.set_entry_point("route")
+    
+    # Add conditional routing
+    workflow.add_conditional_edges(
+        "route",
+        route_to_tool,
+        {
+            "get_repair_cost": "get_repair_cost",
+            "search_repair_info": "search_repair_info", 
+            "roll_dice_for_fun": "roll_dice_for_fun"
+        }
+    )
     
     # Add edges to end
     workflow.add_edge("get_repair_cost", END)
@@ -220,8 +224,7 @@ async def main():
     state = RepairState(
         messages=[],
         user_query="",
-        repair_info={},
-        current_step="start"
+        repair_info={}
     )
     
     while True:
@@ -240,20 +243,9 @@ async def main():
                 "content": user_input
             })
             
-            # Run the workflow
+            # Run the workflow using LangGraph routing
             print("🤔 Processing your request...")
-            
-            # Determine which tool to use
-            tool_choice = route_to_tool(state)
-            print(f"🔧 Using tool: {tool_choice}")
-            
-            # Execute the appropriate tool
-            if tool_choice == "get_repair_cost":
-                result = await get_repair_cost(state)
-            elif tool_choice == "search_repair_info":
-                result = await search_repair_info(state)
-            else:
-                result = await roll_dice_for_fun(state)
+            result = await app.ainvoke(state)
             
             # Display the response
             if result["messages"]:

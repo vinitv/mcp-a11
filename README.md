@@ -86,8 +86,15 @@ There are a few activities for this assignment!
 
 Choose an API that you enjoy using - and build an MCP server for it!
 
+##### ✅ Answer: 
+Check server.py
+
 ### 🏗️ Activity #2: 
 
 Build a simple LangGraph application that interacts with your MCP Server.
 
 You can find details [here](https://github.com/langchain-ai/langchain-mcp-adapters)!
+
+##### ✅ Answer:
+
+![Activity 2](./img/a2.png)
